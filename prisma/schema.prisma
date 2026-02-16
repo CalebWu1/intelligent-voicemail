@@ -19,3 +19,35 @@ model Post {
 
     @@index([name])
 }
+
+enum VoicemailStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  EMERGENCY
+}
+
+model Voicemail {
+  id            String          @id @default(cuid())
+  audioUrl      String          // S3 or Vercel Blob URL
+  status        VoicemailStatus @default(PENDING)
+  
+  // AI Extracted Data (JSONB for flexibility)
+  transcript    String?         @db.Text
+  summary       String?         @db.Text
+  extractedData Json?           // { patientName: string, dob: string, reason: string }
+  urgency       UrgencyLevel    @default(LOW)
+  
+  // Workflow tracking
+  assignedTo    String?         // Admin user ID
+  resolvedAt    DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
