@@ -1,13 +1,58 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Edit2, Users, Code, MoreHorizontal } from 'lucide-react';
 import { Navbar } from "./navbar";
 import { Sidebar } from "./sidebar";
 import { DashboardChart } from "./dashboardChart";
+import { RecordButton } from "./recordbutton";
+import { uploadVoiceNote } from "../actions";
+import { transcribeAudio } from "./voiceTranscription";
 
 export function DashboardWrapper() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+
+  const startRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const recorder = new MediaRecorder(stream);
+    const chunks: Blob[] = [];
+    const mimeType = 'audio/mpeg'
+    recorder.ondataavailable = (e) => chunks.push(e.data);
+    recorder.onstop = async () => {
+      const audioBlob = new Blob(chunks, { type: mimeType });
+        // Add number to voicemail to fix overriding
+        const audioFile = new File([audioBlob], "voicemail.mp3", { type: mimeType });
+
+        const formData = new FormData();
+        formData.append('file', audioFile);
+        try {
+          const blobUrl = await uploadVoiceNote(formData);
+          console.log("Uploaded successfully:", blobUrl);
+        } catch (error) {
+          console.error("Upload failed:", error);
+        }
+
+        stream.getTracks().forEach(track => track.stop());
+    };
+
+    recorder.start();
+    mediaRecorderRef.current = recorder;
+  };
+
+  const toggleRecording = async () => {
+    if (!isRecording) {
+      setIsRecording(true);
+      await startRecording();
+    } else {
+      setIsRecording(false);
+      // Access the ref to stop the recording immediately
+      if (mediaRecorderRef.current) {
+        mediaRecorderRef.current.stop();
+      }
+    }
+  };
 
   return (
     <div className='flex flex-col h-screen overflow-hidden'>
@@ -42,7 +87,8 @@ export function DashboardWrapper() {
           <div className="flex-1">
             <DashboardChart />
           </div>
-          
+ 
+          <RecordButton isRecording={isRecording} toggleRecording={toggleRecording}/>
         </main>
       </div>
     </div>

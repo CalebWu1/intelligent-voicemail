@@ -35,6 +35,7 @@ const chartOptions = {
   },
 };
 
+// Currently mocking data
 const chartData = {
   labels: ['Low', 'Medium', 'High', 'Emergency'],
   datasets: [
@@ -51,17 +52,10 @@ const chartData = {
 
 export function DashboardChart() {
   return (
-    /* Using h-screen and max-w-7xl to prevent it from getting too wide.
-       mx-auto centers the entire dashboard on large displays.
-    */
     <div className="flex flex-col h-screen w-full max-w-[1600px] mx-auto bg-white p-4 md:p-8 gap-6 overflow-hidden">
       
-      {/* Main Dashboard Area 
-          max-h-[70vh] ensures that on massive screens, the chart doesn't become 
-          impossibly tall, maintaining the "appropriate size" you mentioned.
-      */}
+      {/* Main Dashboard Area */}
       <div className="flex-1 min-h-0 max-h-[750px] bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch gap-8 transition-all">
-        
         {/* Left side: The Chart Container */}
         <div className="flex-[2] flex flex-col min-h-0">
           <h2 className="text-slate-800 font-bold text-2xl mb-4 text-center md:text-left shrink-0">
@@ -72,10 +66,9 @@ export function DashboardChart() {
           </div>
         </div>
 
-        {/* Right side: Summary Metric Panel */}
+        {/* Right side */}
         <div className="flex-1 bg-white p-6 rounded-2xl border border-slate-100 flex flex-col justify-center items-center shadow-inner md:max-w-xs text-center">
           <p className="text-slate-500 font-semibold text-sm uppercase tracking-wider shrink-0">Total Received</p>
-          {/* text-6xl on mobile, text-8xl on desktop */}
           <p className="text-6xl xl:text-8xl font-black text-slate-900 my-4 tabular-nums drop-shadow-sm">44</p>
           <div className="w-full max-w-[150px] h-2 bg-slate-100 rounded-full overflow-hidden shrink-0">
              <div className="h-full bg-blue-500 w-[85%] rounded-full" />
@@ -84,7 +77,7 @@ export function DashboardChart() {
         </div>
       </div>
 
-      {/* Bottom Row: Metric Cards */}
+      {/* Bottom Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 shrink-0 max-w-full">
         <div className="bg-emerald-50 border border-emerald-100 p-6 rounded-2xl flex justify-between items-center group transition-all hover:shadow-md hover:bg-emerald-100/50">
           <div>
