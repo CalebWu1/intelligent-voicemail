@@ -1,14 +1,16 @@
-import { PrismaClient, UrgencyLevel, VoicemailStatus } from "@prisma/client";
+import { PrismaClient, UrgencyLevel, VoicemailStatus, type Prisma } from "../generated/prisma";
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Emptying database...");
+  // Clean up both tables to maintain referential integrity
   await prisma.voicemail.deleteMany();
+  await prisma.post.deleteMany();
 
   console.log("Seeding voicemails...");
 
-  const voicemails = [
+  const voicemails: Prisma.VoicemailCreateInput[] = [
     {
       audioUrl: "https://example.com/audio/vm1.mp3",
       status: VoicemailStatus.COMPLETED,
@@ -22,6 +24,8 @@ async function main() {
         callbackNumber: "0412 345 678"
       },
       urgency: UrgencyLevel.HIGH,
+      assignedTo: null,
+      resolvedAt: null,
     },
     {
       audioUrl: "https://example.com/audio/vm2.mp3",
@@ -35,6 +39,8 @@ async function main() {
         callbackNumber: "Unknown"
       },
       urgency: UrgencyLevel.LOW,
+      assignedTo: null,
+      resolvedAt: null,
     },
     {
       audioUrl: "https://example.com/audio/vm3.mp3",
@@ -47,20 +53,30 @@ async function main() {
         languageDetected: "Mandarin/English"
       },
       urgency: UrgencyLevel.MEDIUM,
+      assignedTo: null,
+      resolvedAt: null,
     },
     {
       audioUrl: "https://example.com/audio/vm4.mp3",
-      status: VoicemailStatus.PENDING, // This simulates a message currently being processed
+      status: VoicemailStatus.PENDING,
       transcript: null,
       summary: null,
-      extractedData: null,
       urgency: UrgencyLevel.LOW,
+      assignedTo: null,
+      resolvedAt: null,
     }
   ];
 
   for (const vm of voicemails) {
     await prisma.voicemail.create({ data: vm });
   }
+
+  // Optional: Create a sample post if you need it
+  await prisma.post.create({
+    data: {
+      name: "Sample Post",
+    }
+  });
 
   console.log("Seed complete!");
 }

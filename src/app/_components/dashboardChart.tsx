@@ -6,6 +6,7 @@ import {
   ArcElement,
   Tooltip,
   Legend,
+  type ChartOptions,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { Check, X } from 'lucide-react';
@@ -19,18 +20,24 @@ const COLORS = {
   low: { bg: 'rgba(34, 197, 94, 0.8)', border: '#22c55e' },
 };
 
-const chartOptions = {
+const chartOptions: ChartOptions<'doughnut'> = {
   responsive: true,
   maintainAspectRatio: false,
   cutout: '75%',
   plugins: {
     legend: {
-      position: 'bottom' as const,
+      position: 'bottom',
       labels: {
         padding: 20,
         usePointStyle: true,
-        font: { size: 12, weight: '600' }
+        font: {
+          size: 12,
+          weight: 'bold'
+        }
       },
+    },
+    tooltip: {
+      enabled: true,
     },
   },
 };

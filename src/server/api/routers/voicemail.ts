@@ -1,11 +1,12 @@
 
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import type { InputJsonValue, JsonObject } from "@prisma/client/runtime/library";
 import { Prisma } from "@prisma/client";
 
 
-// export const voicemailRouter = createTRPCRouter({
+// No auth implemented so all routes are public
+export const voicemailRouter = createTRPCRouter({
 //   // 1. Add new voicemail
 //   create: protectedProcedure
 //     .input(z.object({ audioUrl: z.string() }))

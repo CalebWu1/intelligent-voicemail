@@ -7,7 +7,6 @@ import { Sidebar } from "./sidebar";
 import { DashboardChart } from "./dashboardChart";
 import { RecordButton } from "./recordbutton";
 import { uploadVoiceNote } from "../actions";
-import { transcribeAudio } from "./voiceTranscription";
 
 export function DashboardWrapper() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
