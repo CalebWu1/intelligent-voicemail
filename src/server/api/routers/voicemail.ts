@@ -222,4 +222,23 @@ export const voicemailRouter = createTRPCRouter({
     return result;
   }),
 
+  updateVoicemail: publicProcedure
+  .input(z.object({
+    id: z.string(),
+    patientName: z.string().nullable(),
+    doctorName: z.string().nullable(),
+    summary: z.string().nullable(),
+    transcript: z.string().nullable(),
+    priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'EMERGENCY']),
+    department: z.enum(['GENERAL','CARDIOVASCULAR','SKELETAL','MUSCULAR','NERVOUS','RESPIRATORY','DIGESTIVE','URINARY','IMMUNE','ENDOCRINE','INTEGUMENTARY','REPRODUCTIVE']),
+    medicalTags: z.array(z.string()),
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const { id, ...data } = input;
+    return ctx.db.voicemail.update({
+      where: { id },
+      data,
+    });
+  }),
+
 });
