@@ -7,17 +7,34 @@ import { Sidebar } from "./sidebar";
 import { DashboardChart } from "./dashboardChart";
 import { RecordButton } from "./recordbutton";
 import { uploadVoiceNote } from "../actions";
+import { api } from "~/trpc/react";
 
 export function DashboardWrapper() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  // Router Initialisation
+  const { mutate, data, isPending } = api.voicemail.transcribe.useMutation({
+    onSuccess: (data) => {
+      console.log("Transcription:", data);
+      // do something with data e.g. set state
+    },
+    onError: (error) => {
+      console.error("Transcription failed:", error);
+    },
+  });
+
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const recorder = new MediaRecorder(stream);
+    const mimeType = MediaRecorder.isTypeSupported("audio/webm") 
+      ? "audio/webm" 
+      : MediaRecorder.isTypeSupported("audio/mp4") 
+      ? "audio/mp4" 
+      : "audio/webm";
+    const recorder = new MediaRecorder(stream, {mimeType});
     const chunks: Blob[] = [];
-    const mimeType = 'audio/mpeg'
+
     recorder.ondataavailable = (e) => chunks.push(e.data);
     recorder.onstop = async () => {
       const audioBlob = new Blob(chunks, { type: mimeType });
@@ -28,6 +45,7 @@ export function DashboardWrapper() {
         formData.append('file', audioFile);
         try {
           const blobUrl = await uploadVoiceNote(formData);
+          mutate({ voicemailUrl: blobUrl, mimeType: mimeType });
           console.log("Uploaded successfully:", blobUrl);
         } catch (error) {
           console.error("Upload failed:", error);

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, type ReactNode } from "react";
-import {BookOpen, Inbox, Plus, Upload, Share, Users, Star, Home, ChevronRight} from "lucide-react";
+import { useState } from "react";
+import {Inbox, Home} from "lucide-react";
 import Link from "next/link";
 
 interface SidebarProps {
@@ -26,6 +26,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         {/* Home */}
         <Link
           href={'/'}
+          onClick={() => setActiveTab('Home')}
           className={`flex items-center gap-3 rounded-md px-3 py-2 text-black cursor-pointer ${activeTab==='Home' ? 'bg-[#f3f4f8]': 'hover:bg-[#f3f4f8]'}`}
         >
           <Home className="w-4 h-4 min-w-[16px]"/>
@@ -37,6 +38,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         {/* Inbox */}
         <Link
           href={'/inbox'}
+          onClick={() => setActiveTab('Inbox')}
           className={`flex items-center gap-3 rounded-md px-3 py-2 cursor-pointer ${activeTab==='Inbox' ? 'bg-[#f3f4f8]': 'hover:bg-[#f3f4f8]'}`}
         >
           <Inbox className="h-4 w-4 min-w-[16px] text-gray-600" />
