@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { ArrowLeft, Play, CheckCircle, UserPlus, Clock, Tag, ExternalLink, Mic, Save, X, Pencil } from 'lucide-react';
+import { ArrowLeft, Play, CheckCircle, UserPlus, Clock, Tag, ExternalLink, Mic, Save, X, Pencil, Home } from 'lucide-react';
 import { Navbar } from "~/app/_components/navbar";
 import { Sidebar } from "~/app/_components/sidebar";
 import type { UrgencyLevel, Voicemail, Department } from "generated/prisma";
@@ -331,6 +331,15 @@ export function VoicemailWrapper({ voicemail }: { voicemail: Voicemail }) {
                   >
                     <UserPlus size={16} />
                     Assign to Clinician
+                  </button>
+                </div>
+                {/* Assign to Clinic */}
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="flex items-center gap-3 px-4 py-3 bg-violet-50 hover:bg-violet-100 border border-violet-200 rounded-xl text-violet-700 font-medium text-sm transition-colors w-fit"
+                  >
+                    <Home size={16} />
+                    Assign to Clinic
                   </button>
                 </div>
               </div>
