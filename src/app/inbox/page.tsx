@@ -1,14 +1,19 @@
 'use client';
-import { useState } from "react";
+import { Suspense } from "react";
 import { InboxWrapper} from "./_components/inboxWrapper"
 import { useSearchParams } from 'next/navigation';
 
-export default function Inbox() {
+function InboxPage() {
   const searchParams = useSearchParams();
-const [filterUrgency] = useState<string>(
-  searchParams.get('urgency')?.toUpperCase() ?? 'ALL'
-);
+  const filterUrgency = searchParams.get('urgency')?.toUpperCase() ?? 'ALL';
+
+  return <InboxWrapper priorityFilter={filterUrgency} />;
+}
+
+export default function Inbox() {
   return (
-      <InboxWrapper priorityFilter={filterUrgency} />
-  )
+    <Suspense fallback={<div>Loading...</div>}>
+      <InboxPage />
+    </Suspense>
+  );
 }
