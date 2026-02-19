@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -10,6 +10,9 @@ import {
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { Check, X } from 'lucide-react';
+import { api } from '~/trpc/react';
+import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -42,22 +45,39 @@ const chartOptions: ChartOptions<'doughnut'> = {
   },
 };
 
-// Currently mocking data
-const chartData = {
-  labels: ['Low', 'Medium', 'High', 'Emergency'],
-  datasets: [
-    {
-      label: 'Priority Level',
-      data: [12, 19, 8, 5],
-      backgroundColor: [COLORS.low.bg, COLORS.medium.bg, COLORS.high.bg, COLORS.emergency.bg],
-      borderColor: [COLORS.low.border, COLORS.medium.border, COLORS.high.border, COLORS.emergency.border],
-      borderWidth: 2,
-      hoverOffset: 10,
-    },
-  ],
-};
-
 export function DashboardChart() {
+  const router = useRouter();
+  const countUrgency = api.voicemail.countUrgency.useQuery();
+  const numPendingMail= api.voicemail.getNumPending.useQuery();
+  const completedTranslations= api.voicemail.getCompletedTranslations.useQuery();
+  const failedTranslations= api.voicemail.getFailed.useQuery();
+  const priorityLevels = ['LOW', 'MEDIUM', 'HIGH', 'EMERGENCY'];
+
+  const handlePriorityClick = (priority: string) => {
+    router.push(`/inbox?priority=${priority.toLowerCase()}`);
+  };
+
+  const handleLegendClick = (index: number) => {
+    const priorityLevels = ['LOW', 'MEDIUM', 'HIGH', 'EMERGENCY'];
+    const priority = priorityLevels[index];
+    if (priority) {
+      handlePriorityClick(priority);
+    }
+  };
+
+  const chartData = {
+    labels: ['Low', 'Medium', 'High', 'Emergency'],
+    datasets: [
+      {
+        label: 'Priority Level',
+        data: countUrgency.data ?? [0,0,0,0],
+        backgroundColor: [COLORS.low.bg, COLORS.medium.bg, COLORS.high.bg, COLORS.emergency.bg],
+        borderColor: [COLORS.low.border, COLORS.medium.border, COLORS.high.border, COLORS.emergency.border],
+        borderWidth: 2,
+        hoverOffset: 10,
+      },
+    ],
+  };
   return (
     <div className="flex flex-col h-screen w-full max-w-[1600px] mx-auto bg-white p-4 md:p-8 gap-6 overflow-hidden">
       
@@ -68,19 +88,47 @@ export function DashboardChart() {
           <h2 className="text-slate-800 font-bold text-2xl mb-4 text-center md:text-left shrink-0">
             Voicemails Processed
           </h2>
-          <div className="flex-1 relative min-h-0">
-            <Doughnut options={chartOptions} data={chartData} />
+          <div className="flex-1 relative min-h-0 cursor-pointer">
+            <Doughnut
+              data={chartData}
+              options={{
+                ...chartOptions,
+                onClick: (event, elements) => {
+                  if (elements.length > 0) {
+                    const index = elements[0]?.index;
+                    if (typeof index === 'number') {
+                      const priority = priorityLevels[index];
+                      if (priority) router.push(`/inbox?urgency=${priority}`);
+                    }
+                  }
+                },
+                plugins: {
+                  ...chartOptions.plugins,
+                  legend: {
+                    ...chartOptions.plugins?.legend,
+                    onClick: (e, legendItem) => {
+                      const index = legendItem.index;
+                      if (typeof index === 'number') {
+                        const priority = priorityLevels[index];
+                        if (priority) router.push(`/inbox?urgency=${priority}`);
+                      }
+                    },
+                  },
+                },
+              }}
+            />
           </div>
         </div>
 
         {/* Right side */}
         <div className="flex-1 bg-white p-6 rounded-2xl border border-slate-100 flex flex-col justify-center items-center shadow-inner md:max-w-xs text-center">
           <p className="text-slate-500 font-semibold text-sm uppercase tracking-wider shrink-0">Total Received</p>
-          <p className="text-6xl xl:text-8xl font-black text-slate-900 my-4 tabular-nums drop-shadow-sm">44</p>
-          <div className="w-full max-w-[150px] h-2 bg-slate-100 rounded-full overflow-hidden shrink-0">
-             <div className="h-full bg-blue-500 w-[85%] rounded-full" />
-          </div>
-          <p className="text-xs text-slate-400 mt-4 font-medium shrink-0">85% Triage Accuracy</p>
+          <Link
+            href={'/inbox'}
+            className="text-6xl xl:text-8xl font-black text-slate-900 my-4 tabular-nums drop-shadow-sm"
+          >
+            {numPendingMail.data ?? 0}
+          </Link>
         </div>
       </div>
 
@@ -88,8 +136,8 @@ export function DashboardChart() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 shrink-0 max-w-full">
         <div className="bg-emerald-50 border border-emerald-100 p-6 rounded-2xl flex justify-between items-center group transition-all hover:shadow-md hover:bg-emerald-100/50">
           <div>
-            <p className="text-emerald-600 font-bold text-xs uppercase tracking-widest">Completed</p>
-            <h3 className="text-4xl font-black text-emerald-900">39</h3>
+            <p className="text-emerald-600 font-bold text-xs uppercase tracking-widest">Completed Translations</p>
+            <h3 className="text-4xl font-black text-emerald-900">{completedTranslations.data ?? 0}</h3>
           </div>
           <div className="bg-emerald-500 text-white p-4 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
              <Check/>
@@ -99,7 +147,7 @@ export function DashboardChart() {
         <div className="bg-red-50 border border-red-100 p-6 rounded-2xl flex justify-between items-center group transition-all hover:shadow-md hover:bg-red-100/50">
           <div>
             <p className="text-red-600 font-bold text-xs uppercase tracking-widest">Failed Translations</p>
-            <h3 className="text-4xl font-black text-red-900">5</h3>
+            <h3 className="text-4xl font-black text-red-900">{failedTranslations.data ?? 0}</h3>
           </div>
           <div className="bg-red-500 text-white p-4 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
              <X/>

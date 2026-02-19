@@ -47,6 +47,24 @@ export const UrgencyLevel: {
 
 export type UrgencyLevel = (typeof UrgencyLevel)[keyof typeof UrgencyLevel]
 
+
+export const Department: {
+  GENERAL: 'GENERAL',
+  CARDIOVASCULAR: 'CARDIOVASCULAR',
+  SKELETAL: 'SKELETAL',
+  MUSCULAR: 'MUSCULAR',
+  NERVOUS: 'NERVOUS',
+  RESPIRATORY: 'RESPIRATORY',
+  DIGESTIVE: 'DIGESTIVE',
+  URINARY: 'URINARY',
+  IMMUNE: 'IMMUNE',
+  ENDOCRINE: 'ENDOCRINE',
+  INTEGUMENTARY: 'INTEGUMENTARY',
+  REPRODUCTIVE: 'REPRODUCTIVE'
+};
+
+export type Department = (typeof Department)[keyof typeof Department]
+
 }
 
 export type VoicemailStatus = $Enums.VoicemailStatus
@@ -56,6 +74,10 @@ export const VoicemailStatus: typeof $Enums.VoicemailStatus
 export type UrgencyLevel = $Enums.UrgencyLevel
 
 export const UrgencyLevel: typeof $Enums.UrgencyLevel
+
+export type Department = $Enums.Department
+
+export const Department: typeof $Enums.Department
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2017,7 +2039,10 @@ export namespace Prisma {
     status: $Enums.VoicemailStatus | null
     transcript: string | null
     summary: string | null
-    urgency: $Enums.UrgencyLevel | null
+    department: $Enums.Department | null
+    priority: $Enums.UrgencyLevel | null
+    patientName: string | null
+    doctorName: string | null
     assignedTo: string | null
     resolvedAt: Date | null
     createdAt: Date | null
@@ -2030,7 +2055,10 @@ export namespace Prisma {
     status: $Enums.VoicemailStatus | null
     transcript: string | null
     summary: string | null
-    urgency: $Enums.UrgencyLevel | null
+    department: $Enums.Department | null
+    priority: $Enums.UrgencyLevel | null
+    patientName: string | null
+    doctorName: string | null
     assignedTo: string | null
     resolvedAt: Date | null
     createdAt: Date | null
@@ -2043,8 +2071,11 @@ export namespace Prisma {
     status: number
     transcript: number
     summary: number
-    extractedData: number
-    urgency: number
+    department: number
+    priority: number
+    patientName: number
+    doctorName: number
+    medicalTags: number
     assignedTo: number
     resolvedAt: number
     createdAt: number
@@ -2059,7 +2090,10 @@ export namespace Prisma {
     status?: true
     transcript?: true
     summary?: true
-    urgency?: true
+    department?: true
+    priority?: true
+    patientName?: true
+    doctorName?: true
     assignedTo?: true
     resolvedAt?: true
     createdAt?: true
@@ -2072,7 +2106,10 @@ export namespace Prisma {
     status?: true
     transcript?: true
     summary?: true
-    urgency?: true
+    department?: true
+    priority?: true
+    patientName?: true
+    doctorName?: true
     assignedTo?: true
     resolvedAt?: true
     createdAt?: true
@@ -2085,8 +2122,11 @@ export namespace Prisma {
     status?: true
     transcript?: true
     summary?: true
-    extractedData?: true
-    urgency?: true
+    department?: true
+    priority?: true
+    patientName?: true
+    doctorName?: true
+    medicalTags?: true
     assignedTo?: true
     resolvedAt?: true
     createdAt?: true
@@ -2172,8 +2212,11 @@ export namespace Prisma {
     status: $Enums.VoicemailStatus
     transcript: string | null
     summary: string | null
-    extractedData: JsonValue | null
-    urgency: $Enums.UrgencyLevel
+    department: $Enums.Department
+    priority: $Enums.UrgencyLevel
+    patientName: string | null
+    doctorName: string | null
+    medicalTags: string[]
     assignedTo: string | null
     resolvedAt: Date | null
     createdAt: Date
@@ -2203,8 +2246,11 @@ export namespace Prisma {
     status?: boolean
     transcript?: boolean
     summary?: boolean
-    extractedData?: boolean
-    urgency?: boolean
+    department?: boolean
+    priority?: boolean
+    patientName?: boolean
+    doctorName?: boolean
+    medicalTags?: boolean
     assignedTo?: boolean
     resolvedAt?: boolean
     createdAt?: boolean
@@ -2217,8 +2263,11 @@ export namespace Prisma {
     status?: boolean
     transcript?: boolean
     summary?: boolean
-    extractedData?: boolean
-    urgency?: boolean
+    department?: boolean
+    priority?: boolean
+    patientName?: boolean
+    doctorName?: boolean
+    medicalTags?: boolean
     assignedTo?: boolean
     resolvedAt?: boolean
     createdAt?: boolean
@@ -2231,8 +2280,11 @@ export namespace Prisma {
     status?: boolean
     transcript?: boolean
     summary?: boolean
-    extractedData?: boolean
-    urgency?: boolean
+    department?: boolean
+    priority?: boolean
+    patientName?: boolean
+    doctorName?: boolean
+    medicalTags?: boolean
     assignedTo?: boolean
     resolvedAt?: boolean
     createdAt?: boolean
@@ -2245,15 +2297,18 @@ export namespace Prisma {
     status?: boolean
     transcript?: boolean
     summary?: boolean
-    extractedData?: boolean
-    urgency?: boolean
+    department?: boolean
+    priority?: boolean
+    patientName?: boolean
+    doctorName?: boolean
+    medicalTags?: boolean
     assignedTo?: boolean
     resolvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type VoicemailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "audioUrl" | "status" | "transcript" | "summary" | "extractedData" | "urgency" | "assignedTo" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["voicemail"]>
+  export type VoicemailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "audioUrl" | "status" | "transcript" | "summary" | "department" | "priority" | "patientName" | "doctorName" | "medicalTags" | "assignedTo" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["voicemail"]>
 
   export type $VoicemailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Voicemail"
@@ -2264,8 +2319,11 @@ export namespace Prisma {
       status: $Enums.VoicemailStatus
       transcript: string | null
       summary: string | null
-      extractedData: Prisma.JsonValue | null
-      urgency: $Enums.UrgencyLevel
+      department: $Enums.Department
+      priority: $Enums.UrgencyLevel
+      patientName: string | null
+      doctorName: string | null
+      medicalTags: string[]
       assignedTo: string | null
       resolvedAt: Date | null
       createdAt: Date
@@ -2698,8 +2756,11 @@ export namespace Prisma {
     readonly status: FieldRef<"Voicemail", 'VoicemailStatus'>
     readonly transcript: FieldRef<"Voicemail", 'String'>
     readonly summary: FieldRef<"Voicemail", 'String'>
-    readonly extractedData: FieldRef<"Voicemail", 'Json'>
-    readonly urgency: FieldRef<"Voicemail", 'UrgencyLevel'>
+    readonly department: FieldRef<"Voicemail", 'Department'>
+    readonly priority: FieldRef<"Voicemail", 'UrgencyLevel'>
+    readonly patientName: FieldRef<"Voicemail", 'String'>
+    readonly doctorName: FieldRef<"Voicemail", 'String'>
+    readonly medicalTags: FieldRef<"Voicemail", 'String[]'>
     readonly assignedTo: FieldRef<"Voicemail", 'String'>
     readonly resolvedAt: FieldRef<"Voicemail", 'DateTime'>
     readonly createdAt: FieldRef<"Voicemail", 'DateTime'>
@@ -3100,8 +3161,11 @@ export namespace Prisma {
     status: 'status',
     transcript: 'transcript',
     summary: 'summary',
-    extractedData: 'extractedData',
-    urgency: 'urgency',
+    department: 'department',
+    priority: 'priority',
+    patientName: 'patientName',
+    doctorName: 'doctorName',
+    medicalTags: 'medicalTags',
     assignedTo: 'assignedTo',
     resolvedAt: 'resolvedAt',
     createdAt: 'createdAt',
@@ -3119,29 +3183,12 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
-  };
-
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   export const NullsOrder: {
@@ -3214,16 +3261,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Json'
+   * Reference to a field of type 'Department'
    */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+  export type EnumDepartmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Department'>
     
 
 
   /**
-   * Reference to a field of type 'QueryMode'
+   * Reference to a field of type 'Department[]'
    */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+  export type ListEnumDepartmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Department[]'>
     
 
 
@@ -3316,8 +3363,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusFilter<"Voicemail"> | $Enums.VoicemailStatus
     transcript?: StringNullableFilter<"Voicemail"> | string | null
     summary?: StringNullableFilter<"Voicemail"> | string | null
-    extractedData?: JsonNullableFilter<"Voicemail">
-    urgency?: EnumUrgencyLevelFilter<"Voicemail"> | $Enums.UrgencyLevel
+    department?: EnumDepartmentFilter<"Voicemail"> | $Enums.Department
+    priority?: EnumUrgencyLevelFilter<"Voicemail"> | $Enums.UrgencyLevel
+    patientName?: StringNullableFilter<"Voicemail"> | string | null
+    doctorName?: StringNullableFilter<"Voicemail"> | string | null
+    medicalTags?: StringNullableListFilter<"Voicemail">
     assignedTo?: StringNullableFilter<"Voicemail"> | string | null
     resolvedAt?: DateTimeNullableFilter<"Voicemail"> | Date | string | null
     createdAt?: DateTimeFilter<"Voicemail"> | Date | string
@@ -3330,8 +3380,11 @@ export namespace Prisma {
     status?: SortOrder
     transcript?: SortOrderInput | SortOrder
     summary?: SortOrderInput | SortOrder
-    extractedData?: SortOrderInput | SortOrder
-    urgency?: SortOrder
+    department?: SortOrder
+    priority?: SortOrder
+    patientName?: SortOrderInput | SortOrder
+    doctorName?: SortOrderInput | SortOrder
+    medicalTags?: SortOrder
     assignedTo?: SortOrderInput | SortOrder
     resolvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -3347,8 +3400,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusFilter<"Voicemail"> | $Enums.VoicemailStatus
     transcript?: StringNullableFilter<"Voicemail"> | string | null
     summary?: StringNullableFilter<"Voicemail"> | string | null
-    extractedData?: JsonNullableFilter<"Voicemail">
-    urgency?: EnumUrgencyLevelFilter<"Voicemail"> | $Enums.UrgencyLevel
+    department?: EnumDepartmentFilter<"Voicemail"> | $Enums.Department
+    priority?: EnumUrgencyLevelFilter<"Voicemail"> | $Enums.UrgencyLevel
+    patientName?: StringNullableFilter<"Voicemail"> | string | null
+    doctorName?: StringNullableFilter<"Voicemail"> | string | null
+    medicalTags?: StringNullableListFilter<"Voicemail">
     assignedTo?: StringNullableFilter<"Voicemail"> | string | null
     resolvedAt?: DateTimeNullableFilter<"Voicemail"> | Date | string | null
     createdAt?: DateTimeFilter<"Voicemail"> | Date | string
@@ -3361,8 +3417,11 @@ export namespace Prisma {
     status?: SortOrder
     transcript?: SortOrderInput | SortOrder
     summary?: SortOrderInput | SortOrder
-    extractedData?: SortOrderInput | SortOrder
-    urgency?: SortOrder
+    department?: SortOrder
+    priority?: SortOrder
+    patientName?: SortOrderInput | SortOrder
+    doctorName?: SortOrderInput | SortOrder
+    medicalTags?: SortOrder
     assignedTo?: SortOrderInput | SortOrder
     resolvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -3381,8 +3440,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusWithAggregatesFilter<"Voicemail"> | $Enums.VoicemailStatus
     transcript?: StringNullableWithAggregatesFilter<"Voicemail"> | string | null
     summary?: StringNullableWithAggregatesFilter<"Voicemail"> | string | null
-    extractedData?: JsonNullableWithAggregatesFilter<"Voicemail">
-    urgency?: EnumUrgencyLevelWithAggregatesFilter<"Voicemail"> | $Enums.UrgencyLevel
+    department?: EnumDepartmentWithAggregatesFilter<"Voicemail"> | $Enums.Department
+    priority?: EnumUrgencyLevelWithAggregatesFilter<"Voicemail"> | $Enums.UrgencyLevel
+    patientName?: StringNullableWithAggregatesFilter<"Voicemail"> | string | null
+    doctorName?: StringNullableWithAggregatesFilter<"Voicemail"> | string | null
+    medicalTags?: StringNullableListFilter<"Voicemail">
     assignedTo?: StringNullableWithAggregatesFilter<"Voicemail"> | string | null
     resolvedAt?: DateTimeNullableWithAggregatesFilter<"Voicemail"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Voicemail"> | Date | string
@@ -3441,8 +3503,11 @@ export namespace Prisma {
     status?: $Enums.VoicemailStatus
     transcript?: string | null
     summary?: string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: $Enums.UrgencyLevel
+    department?: $Enums.Department
+    priority?: $Enums.UrgencyLevel
+    patientName?: string | null
+    doctorName?: string | null
+    medicalTags?: VoicemailCreatemedicalTagsInput | string[]
     assignedTo?: string | null
     resolvedAt?: Date | string | null
     createdAt?: Date | string
@@ -3455,8 +3520,11 @@ export namespace Prisma {
     status?: $Enums.VoicemailStatus
     transcript?: string | null
     summary?: string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: $Enums.UrgencyLevel
+    department?: $Enums.Department
+    priority?: $Enums.UrgencyLevel
+    patientName?: string | null
+    doctorName?: string | null
+    medicalTags?: VoicemailCreatemedicalTagsInput | string[]
     assignedTo?: string | null
     resolvedAt?: Date | string | null
     createdAt?: Date | string
@@ -3469,8 +3537,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusFieldUpdateOperationsInput | $Enums.VoicemailStatus
     transcript?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: NullableStringFieldUpdateOperationsInput | string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    priority?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    patientName?: NullableStringFieldUpdateOperationsInput | string | null
+    doctorName?: NullableStringFieldUpdateOperationsInput | string | null
+    medicalTags?: VoicemailUpdatemedicalTagsInput | string[]
     assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3483,8 +3554,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusFieldUpdateOperationsInput | $Enums.VoicemailStatus
     transcript?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: NullableStringFieldUpdateOperationsInput | string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    priority?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    patientName?: NullableStringFieldUpdateOperationsInput | string | null
+    doctorName?: NullableStringFieldUpdateOperationsInput | string | null
+    medicalTags?: VoicemailUpdatemedicalTagsInput | string[]
     assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3497,8 +3571,11 @@ export namespace Prisma {
     status?: $Enums.VoicemailStatus
     transcript?: string | null
     summary?: string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: $Enums.UrgencyLevel
+    department?: $Enums.Department
+    priority?: $Enums.UrgencyLevel
+    patientName?: string | null
+    doctorName?: string | null
+    medicalTags?: VoicemailCreatemedicalTagsInput | string[]
     assignedTo?: string | null
     resolvedAt?: Date | string | null
     createdAt?: Date | string
@@ -3511,8 +3588,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusFieldUpdateOperationsInput | $Enums.VoicemailStatus
     transcript?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: NullableStringFieldUpdateOperationsInput | string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    priority?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    patientName?: NullableStringFieldUpdateOperationsInput | string | null
+    doctorName?: NullableStringFieldUpdateOperationsInput | string | null
+    medicalTags?: VoicemailUpdatemedicalTagsInput | string[]
     assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3525,8 +3605,11 @@ export namespace Prisma {
     status?: EnumVoicemailStatusFieldUpdateOperationsInput | $Enums.VoicemailStatus
     transcript?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: NullableStringFieldUpdateOperationsInput | string | null
-    extractedData?: NullableJsonNullValueInput | InputJsonValue
-    urgency?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    priority?: EnumUrgencyLevelFieldUpdateOperationsInput | $Enums.UrgencyLevel
+    patientName?: NullableStringFieldUpdateOperationsInput | string | null
+    doctorName?: NullableStringFieldUpdateOperationsInput | string | null
+    medicalTags?: VoicemailUpdatemedicalTagsInput | string[]
     assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3668,28 +3751,12 @@ export namespace Prisma {
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  export type EnumDepartmentFilter<$PrismaModel = never> = {
+    equals?: $Enums.Department | EnumDepartmentFieldRefInput<$PrismaModel>
+    in?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepartmentFilter<$PrismaModel> | $Enums.Department
   }
 
   export type EnumUrgencyLevelFilter<$PrismaModel = never> = {
@@ -3697,6 +3764,14 @@ export namespace Prisma {
     in?: $Enums.UrgencyLevel[] | ListEnumUrgencyLevelFieldRefInput<$PrismaModel>
     notIn?: $Enums.UrgencyLevel[] | ListEnumUrgencyLevelFieldRefInput<$PrismaModel>
     not?: NestedEnumUrgencyLevelFilter<$PrismaModel> | $Enums.UrgencyLevel
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -3721,8 +3796,11 @@ export namespace Prisma {
     status?: SortOrder
     transcript?: SortOrder
     summary?: SortOrder
-    extractedData?: SortOrder
-    urgency?: SortOrder
+    department?: SortOrder
+    priority?: SortOrder
+    patientName?: SortOrder
+    doctorName?: SortOrder
+    medicalTags?: SortOrder
     assignedTo?: SortOrder
     resolvedAt?: SortOrder
     createdAt?: SortOrder
@@ -3735,7 +3813,10 @@ export namespace Prisma {
     status?: SortOrder
     transcript?: SortOrder
     summary?: SortOrder
-    urgency?: SortOrder
+    department?: SortOrder
+    priority?: SortOrder
+    patientName?: SortOrder
+    doctorName?: SortOrder
     assignedTo?: SortOrder
     resolvedAt?: SortOrder
     createdAt?: SortOrder
@@ -3748,7 +3829,10 @@ export namespace Prisma {
     status?: SortOrder
     transcript?: SortOrder
     summary?: SortOrder
-    urgency?: SortOrder
+    department?: SortOrder
+    priority?: SortOrder
+    patientName?: SortOrder
+    doctorName?: SortOrder
     assignedTo?: SortOrder
     resolvedAt?: SortOrder
     createdAt?: SortOrder
@@ -3782,31 +3866,15 @@ export namespace Prisma {
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
+  export type EnumDepartmentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Department | EnumDepartmentFieldRefInput<$PrismaModel>
+    in?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepartmentWithAggregatesFilter<$PrismaModel> | $Enums.Department
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepartmentFilter<$PrismaModel>
+    _max?: NestedEnumDepartmentFilter<$PrismaModel>
   }
 
   export type EnumUrgencyLevelWithAggregatesFilter<$PrismaModel = never> = {
@@ -3849,6 +3917,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type VoicemailCreatemedicalTagsInput = {
+    set: string[]
+  }
+
   export type EnumVoicemailStatusFieldUpdateOperationsInput = {
     set?: $Enums.VoicemailStatus
   }
@@ -3857,8 +3929,17 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type EnumDepartmentFieldUpdateOperationsInput = {
+    set?: $Enums.Department
+  }
+
   export type EnumUrgencyLevelFieldUpdateOperationsInput = {
     set?: $Enums.UrgencyLevel
+  }
+
+  export type VoicemailUpdatemedicalTagsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -3980,6 +4061,13 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedEnumDepartmentFilter<$PrismaModel = never> = {
+    equals?: $Enums.Department | EnumDepartmentFieldRefInput<$PrismaModel>
+    in?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepartmentFilter<$PrismaModel> | $Enums.Department
+  }
+
   export type NestedEnumUrgencyLevelFilter<$PrismaModel = never> = {
     equals?: $Enums.UrgencyLevel | EnumUrgencyLevelFieldRefInput<$PrismaModel>
     in?: $Enums.UrgencyLevel[] | ListEnumUrgencyLevelFieldRefInput<$PrismaModel>
@@ -4035,28 +4123,15 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  export type NestedEnumDepartmentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Department | EnumDepartmentFieldRefInput<$PrismaModel>
+    in?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Department[] | ListEnumDepartmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepartmentWithAggregatesFilter<$PrismaModel> | $Enums.Department
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepartmentFilter<$PrismaModel>
+    _max?: NestedEnumDepartmentFilter<$PrismaModel>
   }
 
   export type NestedEnumUrgencyLevelWithAggregatesFilter<$PrismaModel = never> = {

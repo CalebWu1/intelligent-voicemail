@@ -34,16 +34,35 @@ enum UrgencyLevel {
   EMERGENCY
 }
 
+enum Department {
+  GENERAL
+  CARDIOVASCULAR
+  SKELETAL
+  MUSCULAR
+  NERVOUS
+  RESPIRATORY
+  DIGESTIVE
+  URINARY
+  IMMUNE
+  ENDOCRINE
+  INTEGUMENTARY
+  REPRODUCTIVE
+}
+
 model Voicemail {
   id            String          @id @default(cuid())
   audioUrl      String          // S3 or Vercel Blob URL
   status        VoicemailStatus @default(PENDING)
   
-  // AI Extracted Data (JSONB for flexibility)
+  // AI Extracted Data
   transcript    String?         @db.Text
   summary       String?         @db.Text
-  extractedData Json?           // { patientName: string, dob: string, reason: string }
-  urgency       UrgencyLevel    @default(LOW)
+  department    Department      @default(GENERAL)
+  priority      UrgencyLevel    @default(LOW)
+  patientName   String?         // null if not stated in voicemail
+  doctorName    String?         // null if not stated in voicemail
+  medicalTags   String[]        // postgres array, empty if none detected
+  
   
   // Workflow tracking
   assignedTo    String?         // Admin user ID

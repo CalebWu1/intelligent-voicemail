@@ -11,19 +11,26 @@ import { api } from "~/trpc/react";
 
 export function DashboardWrapper() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // const tabs = ["Home", "Inbox"];
+  const [activeTab, setActiveTab] = useState<string>('Home')
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   // Router Initialisation
+  const addVoicemail = api.voicemail.addVoicemail.useMutation();
   const { mutate, data, isPending } = api.voicemail.transcribe.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       console.log("Transcription:", data);
-      // do something with data e.g. set state
+      addVoicemail.mutate({
+        audioUrl: variables.voicemailUrl,
+        processedData: data,
+      });
     },
     onError: (error) => {
       console.error("Transcription failed:", error);
     },
   });
+  
 
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -82,6 +89,8 @@ export function DashboardWrapper() {
         <Sidebar
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
 
         {/* Main Content */}
@@ -94,7 +103,6 @@ export function DashboardWrapper() {
               </button>
               <div className="flex items-center border border-slate-200 rounded-full bg-white divide-x divide-slate-200 overflow-hidden shadow-sm">
                 <button className="p-2.5 hover:bg-slate-50 text-slate-500"><Users size={18} /></button>
-                <button className="px-4 py-1.5 hover:bg-slate-50 text-slate-500 text-sm font-semibold">Share</button>
                 <button className="p-2.5 hover:bg-slate-50 text-slate-500"><Code size={18} /></button>
                 <button className="p-2.5 hover:bg-slate-50 text-slate-500"><MoreHorizontal size={18} /></button>
               </div>

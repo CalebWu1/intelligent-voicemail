@@ -8,9 +8,9 @@ export async function uploadVoiceNote(formData: FormData) {
 
   const blob = await put(`voicemails/${file.name}`, file, {
     access: 'public',
-    allowOverwrite: true,
+    // allowOverwrite: true,
     // Uncomment after testing
-    // addRandomSuffix: true,
+    addRandomSuffix: true,
   });
 
   return blob.url;

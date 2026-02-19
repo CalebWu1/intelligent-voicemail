@@ -1,8 +1,14 @@
-import { InboxWrapper
+'use client';
+import { useState } from "react";
+import { InboxWrapper} from "./_components/inboxWrapper"
+import { useSearchParams } from 'next/navigation';
 
- } from "./_components/inboxWrapper"
 export default function Inbox() {
+  const searchParams = useSearchParams();
+const [filterUrgency] = useState<string>(
+  searchParams.get('urgency')?.toUpperCase() ?? 'ALL'
+);
   return (
-    <InboxWrapper/>
+      <InboxWrapper priorityFilter={filterUrgency} />
   )
 }

@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from "react";
 import {Inbox, Home} from "lucide-react";
 import Link from "next/link";
 
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
-export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
-  const tabs = ["Home", "Inbox"];
-  const [activeTab, setActiveTab] = useState<string>('Home')
+export function Sidebar({ isOpen, setIsOpen, activeTab, setActiveTab }: SidebarProps) {
   return (
 <div
       onMouseEnter={() => setIsOpen(true)}

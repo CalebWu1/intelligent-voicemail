@@ -106,8 +106,11 @@ exports.Prisma.VoicemailScalarFieldEnum = {
   status: 'status',
   transcript: 'transcript',
   summary: 'summary',
-  extractedData: 'extractedData',
-  urgency: 'urgency',
+  department: 'department',
+  priority: 'priority',
+  patientName: 'patientName',
+  doctorName: 'doctorName',
+  medicalTags: 'medicalTags',
   assignedTo: 'assignedTo',
   resolvedAt: 'resolvedAt',
   createdAt: 'createdAt',
@@ -119,20 +122,9 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
-};
-
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -151,6 +143,21 @@ exports.UrgencyLevel = exports.$Enums.UrgencyLevel = {
   MEDIUM: 'MEDIUM',
   HIGH: 'HIGH',
   EMERGENCY: 'EMERGENCY'
+};
+
+exports.Department = exports.$Enums.Department = {
+  GENERAL: 'GENERAL',
+  CARDIOVASCULAR: 'CARDIOVASCULAR',
+  SKELETAL: 'SKELETAL',
+  MUSCULAR: 'MUSCULAR',
+  NERVOUS: 'NERVOUS',
+  RESPIRATORY: 'RESPIRATORY',
+  DIGESTIVE: 'DIGESTIVE',
+  URINARY: 'URINARY',
+  IMMUNE: 'IMMUNE',
+  ENDOCRINE: 'ENDOCRINE',
+  INTEGUMENTARY: 'INTEGUMENTARY',
+  REPRODUCTIVE: 'REPRODUCTIVE'
 };
 
 exports.Prisma.ModelName = {
@@ -204,13 +211,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Post {\n  id        Int      @id @default(autoincrement())\n  name      String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([name])\n}\n\nenum VoicemailStatus {\n  PENDING\n  PROCESSING\n  COMPLETED\n  FAILED\n}\n\nenum UrgencyLevel {\n  LOW\n  MEDIUM\n  HIGH\n  EMERGENCY\n}\n\nmodel Voicemail {\n  id       String          @id @default(cuid())\n  audioUrl String // S3 or Vercel Blob URL\n  status   VoicemailStatus @default(PENDING)\n\n  // AI Extracted Data (JSONB for flexibility)\n  transcript    String?      @db.Text\n  summary       String?      @db.Text\n  extractedData Json? // { patientName: string, dob: string, reason: string }\n  urgency       UrgencyLevel @default(LOW)\n\n  // Workflow tracking\n  assignedTo String? // Admin user ID\n  resolvedAt DateTime?\n  createdAt  DateTime  @default(now())\n  updatedAt  DateTime  @updatedAt\n}\n",
-  "inlineSchemaHash": "bd9c788fec6e8f1fd53fe772612833737d09ab5d8219d38e74424fc13b89f2be",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Post {\n  id        Int      @id @default(autoincrement())\n  name      String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([name])\n}\n\nenum VoicemailStatus {\n  PENDING\n  PROCESSING\n  COMPLETED\n  FAILED\n}\n\nenum UrgencyLevel {\n  LOW\n  MEDIUM\n  HIGH\n  EMERGENCY\n}\n\nenum Department {\n  GENERAL\n  CARDIOVASCULAR\n  SKELETAL\n  MUSCULAR\n  NERVOUS\n  RESPIRATORY\n  DIGESTIVE\n  URINARY\n  IMMUNE\n  ENDOCRINE\n  INTEGUMENTARY\n  REPRODUCTIVE\n}\n\nmodel Voicemail {\n  id       String          @id @default(cuid())\n  audioUrl String // S3 or Vercel Blob URL\n  status   VoicemailStatus @default(PENDING)\n\n  // AI Extracted Data\n  transcript  String?      @db.Text\n  summary     String?      @db.Text\n  department  Department   @default(GENERAL)\n  priority    UrgencyLevel @default(LOW)\n  patientName String? // null if not stated in voicemail\n  doctorName  String? // null if not stated in voicemail\n  medicalTags String[] // postgres array, empty if none detected\n\n  // Workflow tracking\n  assignedTo String? // Admin user ID\n  resolvedAt DateTime?\n  createdAt  DateTime  @default(now())\n  updatedAt  DateTime  @updatedAt\n}\n",
+  "inlineSchemaHash": "0624c5514c2b1c95cf538fad00780d46028cd9f316b505624fab377cfaf2409f",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Voicemail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"audioUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"VoicemailStatus\"},{\"name\":\"transcript\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"summary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"extractedData\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"urgency\",\"kind\":\"enum\",\"type\":\"UrgencyLevel\"},{\"name\":\"assignedTo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"resolvedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Voicemail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"audioUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"VoicemailStatus\"},{\"name\":\"transcript\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"summary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"department\",\"kind\":\"enum\",\"type\":\"Department\"},{\"name\":\"priority\",\"kind\":\"enum\",\"type\":\"UrgencyLevel\"},{\"name\":\"patientName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"doctorName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"medicalTags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"assignedTo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"resolvedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

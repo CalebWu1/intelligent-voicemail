@@ -134,8 +134,11 @@ exports.Prisma.VoicemailScalarFieldEnum = {
   status: 'status',
   transcript: 'transcript',
   summary: 'summary',
-  extractedData: 'extractedData',
-  urgency: 'urgency',
+  department: 'department',
+  priority: 'priority',
+  patientName: 'patientName',
+  doctorName: 'doctorName',
+  medicalTags: 'medicalTags',
   assignedTo: 'assignedTo',
   resolvedAt: 'resolvedAt',
   createdAt: 'createdAt',
@@ -147,20 +150,9 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
-};
-
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -172,6 +164,21 @@ exports.VoicemailStatus = exports.$Enums.VoicemailStatus = {
   PROCESSING: 'PROCESSING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED'
+};
+
+exports.Department = exports.$Enums.Department = {
+  GENERAL: 'GENERAL',
+  CARDIOVASCULAR: 'CARDIOVASCULAR',
+  SKELETAL: 'SKELETAL',
+  MUSCULAR: 'MUSCULAR',
+  NERVOUS: 'NERVOUS',
+  RESPIRATORY: 'RESPIRATORY',
+  DIGESTIVE: 'DIGESTIVE',
+  URINARY: 'URINARY',
+  IMMUNE: 'IMMUNE',
+  ENDOCRINE: 'ENDOCRINE',
+  INTEGUMENTARY: 'INTEGUMENTARY',
+  REPRODUCTIVE: 'REPRODUCTIVE'
 };
 
 exports.UrgencyLevel = exports.$Enums.UrgencyLevel = {
