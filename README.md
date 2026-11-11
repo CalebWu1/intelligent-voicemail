@@ -1,4 +1,4 @@
-# PulseTriage — AI-Powered Clinical Voicemail & Triage Platform
+# Intelligent Voicemail
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript)](https://www.typescriptlang.org/)
@@ -9,7 +9,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?logo=docker)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**PulseTriage** is an intelligent after-hours voicemail processing and triage system engineered for medical clinics. It bridges the gap between unstructured voice recordings and administrative workflows by using multimodal AI to transcribe audio, classify clinical urgency, extract patient and provider entities, and route requests to appropriate clinical departments.
+**Intelligent Voicemail** is an intelligent after-hours voicemail processing and triage system engineered for medical clinics. It bridges the gap between unstructured voice recordings and administrative workflows by using multimodal AI to transcribe audio, classify clinical urgency, extract patient and provider entities, and route requests to appropriate clinical departments.
 
 ---
 
