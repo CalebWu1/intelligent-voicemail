@@ -4,6 +4,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { GoogleGenAI, Type } from "@google/genai";
 import { TRPCError } from "@trpc/server";
 import type { UrgencyLevel, Department, Prisma } from "generated/prisma";
+import { env } from "~/env";
 
 
 interface VoicemailAnalysis {
@@ -54,7 +55,7 @@ export const voicemailRouter = createTRPCRouter({
   transcribe: publicProcedure
     .input(z.object({ voicemailUrl: z.string().url(), mimeType: z.string().default("audio/webm") }))
     .mutation(async ({ input }) => {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
       const prompt = `
         You are transcribing a real audio voicemail recording.
   
