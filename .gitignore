@@ -9,6 +9,9 @@
 /coverage
 
 # database
+# prisma generated client & binaries
+/generated/
+*.tmp*
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
 db.sqlite
