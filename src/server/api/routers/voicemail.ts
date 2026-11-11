@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { GoogleGenAI, Type } from "@google/genai";
 import { TRPCError } from "@trpc/server";
-import { type UrgencyLevel, type Department, Prisma } from "generated/prisma";
+import type { UrgencyLevel, Department, Prisma } from "generated/prisma";
 
 
 interface VoicemailAnalysis {
@@ -42,7 +42,7 @@ export const voicemailRouter = createTRPCRouter({
         department: input.processedData.department.toUpperCase() as Department,
         priority: input.processedData.priority.toUpperCase() as UrgencyLevel,
         patientName: input.processedData.patient_name ?? 'unknown',
-        doctorName: input.processedData.patient_name ?? 'unknown',
+        doctorName: input.processedData.doctor_name ?? 'unknown',
         medicalTags: input.processedData.medical_tags,
         status: "PENDING",
       }

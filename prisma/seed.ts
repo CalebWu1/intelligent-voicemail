@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Emptying database...");
   await prisma.voicemail.deleteMany();
-  await prisma.post.deleteMany();
 
   console.log("Seeding voicemails...");
 
@@ -67,10 +66,6 @@ async function main() {
   for (const vm of voicemails) {
     await prisma.voicemail.create({ data: vm });
   }
-
-  await prisma.post.create({
-    data: { name: "Sample Post" }
-  });
 
   console.log("Seed complete!");
 }

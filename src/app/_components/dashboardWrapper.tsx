@@ -18,7 +18,7 @@ export function DashboardWrapper() {
 
   // Router Initialisation
   const addVoicemail = api.voicemail.addVoicemail.useMutation();
-  const { mutate, data, isPending } = api.voicemail.transcribe.useMutation({
+  const { mutate } = api.voicemail.transcribe.useMutation({
     onSuccess: (data, variables) => {
       console.log("Transcription:", data);
       addVoicemail.mutate({

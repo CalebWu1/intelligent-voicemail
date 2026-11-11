@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { Play, Clock, Filter, MoreVertical, CalendarArrowDown, CalendarArrowUp, ClockArrowDown, ClockArrowUp, Dot } from 'lucide-react';
+import { Play, Clock, MoreVertical, CalendarArrowDown, CalendarArrowUp, ClockArrowDown, ClockArrowUp, Dot } from 'lucide-react';
 import { Navbar } from "~/app/_components/navbar";
 import { Sidebar } from "~/app/_components/sidebar";
 import type { UrgencyLevel } from "generated/prisma";
@@ -113,7 +113,7 @@ const tagColor = (tag: string) => {
           {/* 2. Filter & Sort Bar */}
           <div className="px-8 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between bg-slate-50/30 gap-4">
             <div className="flex gap-3">
-              <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
                 <FormControl size="small">
                   <Select
                     value={filterUrgency}
@@ -160,8 +160,8 @@ const tagColor = (tag: string) => {
                     </MenuItem>
                   </Select>
                 </FormControl>
-              </button>
-              <button className="flex width-auto items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
+              </div>
+              <div className="flex width-auto items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
                 <FormControl size="small">
                   <Select
                     value={sortBy}
@@ -203,7 +203,7 @@ const tagColor = (tag: string) => {
                     <MenuItem value="urgency_asc"><ClockArrowUp className="w-5 h-5 mr-2"/>Urgency: Low → High</MenuItem>
                   </Select>
                 </FormControl>
-              </button>
+              </div>
             </div>
             <span className="text-sm text-slate-500 font-medium">Showing {voicemails.length} voicemails</span>
           </div>
@@ -223,18 +223,19 @@ const tagColor = (tag: string) => {
                       <div>
                         <div className="flex justify-between items-start mb-4">
                           <div className="bg-slate-100 p-3 rounded-xl group-hover:bg-pink-50 transition-colors">
-                            <button
-                              type="button"
+                            <span
+                              role="button"
+                              tabIndex={0}
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 window.open(vm.audioUrl, '_blank', 'noopener,noreferrer');
                               }}
-                              className="flex items-center justify-center focus:outline-none"
+                              className="flex items-center justify-center focus:outline-none cursor-pointer"
                               aria-label="Play recording"
                             >
                               <Play size={20} className="text-slate-600 group-hover:text-pink-500" />
-                            </button>
+                            </span>
                           </div>
 
                           {/* Top right: urgency badge*/}
@@ -242,9 +243,9 @@ const tagColor = (tag: string) => {
                             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-black ${urgencyColor(vm.priority)}`}>
                               {vm.priority}
                             </span>
-                            <button className="text-slate-400 hover:text-slate-600">
+                            <span className="text-slate-400 hover:text-slate-600">
                               <MoreVertical size={18} />
-                            </button>
+                            </span>
                           </div>
                         </div>
 

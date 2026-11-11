@@ -1,8 +1,9 @@
 'use client';
 
-import { Bell, HelpCircle, MenuIcon, Search } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import { IconButton, Tooltip} from "@mui/material";
 import Link from "next/link";
+import Image from "next/image";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -38,8 +39,8 @@ export function Navbar({ onMenuClick, sidebarOpen }: NavbarProps) {
           href={'/'}
           className="flex items-center gap-2"
         >
-           <img src="/health-icon.svg" alt="" className="w-7 h-auto" />
-           <span className="text-lg font-bold">Harbour to Sunset GP</span>
+           <Image src="/health-icon.svg" alt="PulseTriage Logo" width={28} height={28} className="w-7 h-auto" />
+           <span className="text-lg font-bold">PulseTriage</span>
         </Link>
       </div>
     </header>

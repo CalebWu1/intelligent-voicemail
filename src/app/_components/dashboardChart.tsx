@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -53,16 +53,8 @@ export function DashboardChart() {
   const failedTranslations= api.voicemail.getFailed.useQuery();
   const priorityLevels = ['LOW', 'MEDIUM', 'HIGH', 'EMERGENCY'];
 
-  const handlePriorityClick = (priority: string) => {
-    router.push(`/inbox?priority=${priority.toLowerCase()}`);
-  };
-
-  const handleLegendClick = (index: number) => {
-    const priorityLevels = ['LOW', 'MEDIUM', 'HIGH', 'EMERGENCY'];
-    const priority = priorityLevels[index];
-    if (priority) {
-      handlePriorityClick(priority);
-    }
+  const handlePriorityFilter = (priority: string) => {
+    router.push(`/inbox?urgency=${priority}`);
   };
 
   const chartData = {
@@ -93,12 +85,12 @@ export function DashboardChart() {
               data={chartData}
               options={{
                 ...chartOptions,
-                onClick: (event, elements) => {
+                onClick: (_event, elements) => {
                   if (elements.length > 0) {
                     const index = elements[0]?.index;
                     if (typeof index === 'number') {
                       const priority = priorityLevels[index];
-                      if (priority) router.push(`/inbox?urgency=${priority}`);
+                      if (priority) handlePriorityFilter(priority);
                     }
                   }
                 },
@@ -106,11 +98,11 @@ export function DashboardChart() {
                   ...chartOptions.plugins,
                   legend: {
                     ...chartOptions.plugins?.legend,
-                    onClick: (e, legendItem) => {
+                    onClick: (_e, legendItem) => {
                       const index = legendItem.index;
                       if (typeof index === 'number') {
                         const priority = priorityLevels[index];
-                        if (priority) router.push(`/inbox?urgency=${priority}`);
+                        if (priority) handlePriorityFilter(priority);
                       }
                     },
                   },
